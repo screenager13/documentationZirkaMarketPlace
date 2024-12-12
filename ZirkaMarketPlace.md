@@ -551,7 +551,7 @@ Backend projektu **ZirkaMarketPlaceApi** został zaprojektowany jako zaawansowan
    - **Google Cloud Storage**: Przechowywanie i zarządzanie plikami.
    - **JWT Authentication**: Obsługa uwierzytelniania i autoryzacji użytkowników.
    - **NuGetPacket**: Łatwa praca z API.
-   - **Microsoft.Entity.Framework** - łatwa praca z bazą danych
+   
 
 2. **Struktura bazy danych**:
    Baza danych została zaprojektowana w PostgreSQL, co pozwala na efektywne zarządzanie danymi w projekcie. Struktura bazy danych jest zgodna z poniższym schematem:
@@ -872,4 +872,4 @@ namespace Presentation.Controllers
 
 ### ***Photo z Jiry Dashboard***: 
 # *Podsumowanie:*
-### Frontend i Backend Zirka Market Place został zaprojektowany z myślą o wydajności i łatwości użytkowania. Dzięki zastosowaniu Vite, React i TypeScript, aplikacja oferuje nowoczesny interfejs użytkownika, który jest zarówno szybki, jak i responsywny. Implementacja została zoptymalizowana pod kątem przyszłego rozwoju, co ułatwia dodawanie nowych funkcji oraz dostosowywanie aplikacji do zmieniających się wymagań użytkowników.
+### Frontend i Backend Zirka Market Place został zaprojektowany z myślą o wydajności i łatwości użytkowania. Dzięki zastosowaniu Vite, React, TypeScript, ASP.NET Core i Postgre Sql  aplikacja oferuje nowoczesny interfejs użytkownika, który jest zarówno szybki, jak i responsywny. Implementacja została zoptymalizowana pod kątem przyszłego rozwoju, co ułatwia dodawanie nowych funkcji oraz dostosowywanie aplikacji do zmieniających się wymagań użytkowników.
