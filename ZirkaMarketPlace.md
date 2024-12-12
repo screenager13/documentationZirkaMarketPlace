@@ -870,6 +870,6 @@ namespace Presentation.Controllers
 
 
 
-### ***Photo z Jiry Dashboard***: 
+### ***Photo z Jiry Dashboard***: ![alt text](Photo/jiraMarketPlace.png)
 # *Podsumowanie:*
 ### Frontend i Backend Zirka Market Place został zaprojektowany z myślą o wydajności i łatwości użytkowania. Dzięki zastosowaniu Vite, React, TypeScript, ASP.NET Core i Postgre Sql  aplikacja oferuje nowoczesny interfejs użytkownika, który jest zarówno szybki, jak i responsywny. Implementacja została zoptymalizowana pod kątem przyszłego rozwoju, co ułatwia dodawanie nowych funkcji oraz dostosowywanie aplikacji do zmieniających się wymagań użytkowników.
