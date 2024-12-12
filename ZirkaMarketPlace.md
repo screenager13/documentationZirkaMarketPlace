@@ -790,19 +790,19 @@ namespace Presentation.Controllers
 ### Problem: Brak funkcjonalności wylogowania użytkownika
 - **Opis problemu**: Aplikacja brakowała funkcji wylogowania użytkownika. Użytkownicy pozostawali zalogowani, nawet jeśli token dostępu oraz odświeżania były przechowywane w plikach cookie. Brakowało mechanizmu, aby usuwać te pliki cookie w momencie, gdy użytkownik wybierał opcję wylogowania.
 - **Rozwiązanie**: Dodano metodę `Logout()` do `UserService`, która usuwa pliki cookie o nazwach "AccessToken" i "RefreshToken" z kontekstu HTTP. Dzięki temu po wylogowaniu użytkownika, jego sesja staje się nieważna. Następnie dodano odpowiedni endpoint `POST /logout` w kontrolerze `UserController`, aby umożliwić korzystanie z tej funkcji.
-![alt text](image.png)
-![alt text](image-1.png)
+![alt text](Photo/code1.png)
+![alt text](Photo/code2.png)
 
 ### Problem: Brak odczytu tokenów z plików cookie w autoryzacji
 - **Opis problemu**: W procesie autoryzacji aplikacja nie była w stanie odczytać tokenów JWT przechowywanych w plikach cookie, ponieważ były one oczekiwane jedynie w nagłówkach HTTP (standardowe zachowanie JWT). To ograniczało elastyczność aplikacji, szczególnie w scenariuszach, gdzie tokeny były przechowywane w cookie, np. w aplikacjach SPA.
 - **Rozwiązanie**: Dodano zdarzenie `OnMessageReceived` w konfiguracji JWT w `AuthenticationExtensions`. Dzięki temu aplikacja odczytuje token z pliku cookie "AccessToken" i przypisuje go do `context.Token`, co pozwala na jego wykorzystanie w procesie autoryzacji.
-![alt text](image-2.png)
+![alt text](Photo/code3.png)
 
 ### Problem: Nieprawidłowe ustawienia dla odświeżania tokenów w plikach cookie
 - **Opis problemu**: W konfiguracji plików cookie brakowało odpowiednich ustawień dla ich wygasania i ochrony. Pliki cookie były mniej bezpieczne i potencjalnie mogły być narażone na kradzież.
 - **Rozwiązanie**: Dodano konfigurację plików cookie w `AuthenticationExtensions`, w tym nazwę pliku cookie, ustawienia dla automatycznego wygasania (SlidingExpiration) oraz czas życia (ExpireTimeSpan). Dzięki temu tokeny są automatycznie odświeżane, jeśli użytkownik pozostaje aktywny w aplikacji.
 `
-![alt text](image-3.png)
+![alt text](Photo/code4.png)
 
 ### Problem: Nieprawidłowe typy danych w walidatorach i usługach
 
@@ -814,13 +814,13 @@ namespace Presentation.Controllers
    - Zmieniono typ walidatora w `ProductService` na `CreateProductDto` oraz dostosowano implementację walidatora `ProductDtoValidator`, aby obsługiwał `CreateProductDto`.
 
 **Kod przed zmianą:**
-![alt text](image-4.png)
+![alt text](Photo/code5.png)
 
 **Kod po zmianie:** 
-![alt text](image-5.png)
+![alt text](Photo/code7.png)
 
 **Kod walidatora po zmianie:**
-![alt text](code8.png)
+![alt text](Photo/code7.png)
 
 ### Problem: Nadmiarowe pola w DTO i niepotrzebna logika w kontrolerze
 
@@ -834,16 +834,16 @@ namespace Presentation.Controllers
    - W `UserController` uproszczono metodę `LoginUser`, usuwając warunki związane z logowaniem Google.
 
 **Kod przed zmianą**:
-![alt text](code9.png)
+![alt text](Photo/code8.png)
 
 **Kod po zmianie:**
-![alt text](code10.png)
+![alt text](Photo/code9.png)
 
 **Kod kontrolera przed zmianie:**
-![alt text](code1`.png)
+![alt text](Photo/code10.png)
 
 **Kod kontrolera po zmianie:**
-![alt text](code12.png)
+![alt text](Photo/code11.png)
 
 ### Problem: Niespójność w typach danych zwracanych przez metody serwisu i kontrolera
 
@@ -860,13 +860,13 @@ namespace Presentation.Controllers
      - W kontrolerze `CategoryController` zmieniono trasę z `api/category` na `api/categories`, co poprawiło czytelność i zgodność z konwencją RESTful.
 
 **Kod serwisu:**
-![alt text](code14.png)
+![alt text](Photo/code13.png)
 
 **Kod kontrolera przed zmianą:**
-![alt text](code16.png)
+![alt text](Photo/code12.png)
 
 **Kod kontrolera po zmianie:**
-![alt text](code17.png)
+![alt text](Photo/code16.png)
 
 
 
