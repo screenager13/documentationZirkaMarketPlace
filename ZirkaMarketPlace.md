@@ -873,3 +873,41 @@ namespace Presentation.Controllers
 ### ***Photo z Jiry Dashboard***: ![alt text](Photo/jiraMarketPlace.png)
 # *Podsumowanie:*
 ### Frontend i Backend Zirka Market Place został zaprojektowany z myślą o wydajności i łatwości użytkowania. Dzięki zastosowaniu Vite, React, TypeScript, ASP.NET Core i Postgre Sql  aplikacja oferuje nowoczesny interfejs użytkownika, który jest zarówno szybki, jak i responsywny. Implementacja została zoptymalizowana pod kątem przyszłego rozwoju, co ułatwia dodawanie nowych funkcji oraz dostosowywanie aplikacji do zmieniających się wymagań użytkowników.
+
+<div align="center">
+
+# ☃️ Piękny Bałwanek ☃️
+</div>
+
+
+
+
+
+                                        .--------.
+                    *               .   |________|        .          *
+                                        |      __|/\
+                              *       .-'======\_\o/.
+                                     /___________<>__\
+                               ||||||  /  (o) (o)  \
+                               |||||| |   _  O  _   |          .
+                      .        |||||| |  (_)   (_)  |
+                               ||||||  \   '---'   /    *
+                               \====/   [~~~~~~~~~]
+                                \\//  _/~||~`|~~~~~\_
+                                _||-'`/  ||  |      \`'-._       *
+                        *    .-` )|  ;   ||  |)      ;    '.
+                            /    `--.|   ||  |       |      `\
+                            |         \   |||||)      |-,      \         .
+                            \       .;       _       ; |_,    |
+                              `'''||` ,\     (_)     /,    `.__/
+                                  ||.`  '.         .'  `.             *
+                      *          ||       ` ' ' `       \
+                                  ||                      ;
+                    .          *  ||                      |    .
+                                  ||                      |              *
+                                  ||                      |
+                  .__.-""-.__.-"""||                      ;.-"""-.__.-""-.__.
+                                  ||                     /
+                                  ||'.                 .'
+                                  ||  '-._  _ _  _ _.-'
+                                `""`
