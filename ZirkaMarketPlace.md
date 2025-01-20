@@ -604,11 +604,54 @@ Backend projektu **ZirkaMarketPlaceApi** został zaprojektowany jako zaawansowan
    - Relacja:
      - Many-to-One z tabelą **Categories**.
 
+     **Tabela: Purchases:**:
+   - Kolumny:
+     - Id (Guid)
+     - UserId (Guid, klucz obcy)
+     - ProductId (Guid, klucz obcy)
+     - Quantity (int)
+     - SellerId (Guid, klucz obcy)
+     - AvailableAmount (int)
+     - Status (string)
+   - Relacja:
+     - Many-to-One z tabelą Users przez UserId.
+     - One-to-One z tabelą Products przez Product.
+     - Many-to-One z tabelą Users przez SellerId.
+
 ---
 
 ### Relacje w bazie danych
-Relacja "One-to-Many" między kategoriami a produktami jest skonfigurowana w następujący sposób:
-
+Relacja "One-to-Many" i "One-to-One" między kategoriami a produktami jest skonfigurowana w następujący sposób:
+**Kod w UserConfiguration.cs**:
+```csharp
+            builder.HasMany(u => u.PurchasesAsBuyer)
+                .WithOne(p => p.Buyer)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.HasMany(u => u.PurchasesAsSeller)
+                .WithOne(p => p.Seller)
+                .HasForeignKey(p => p.SellerId)
+                .OnDelete(DeleteBehavior.Restrict);
+```
+**Kod w PurchaseConfiguration.cs**:
+```csharp
+ builder.HasOne(p => p.Buyer)
+             .WithMany(u => u.PurchasesAsBuyer)
+             .HasForeignKey(p => p.UserId)
+             .OnDelete(DeleteBehavior.NoAction);
+         
+         builder.HasOne(p => p.Seller)
+             .WithMany(u => u.PurchasesAsSeller)
+             .HasForeignKey(p => p.SellerId)
+             .OnDelete(DeleteBehavior.Restrict);
+ 
+         builder.HasOne(p => p.Product)
+             .WithOne(p => p.Purchase)
+             .HasForeignKey<Purchase>(p => p.ProductId)
+             .OnDelete(DeleteBehavior.Cascade);
+ 
+```
 **Kod w CategoryConfiguration.cs**:
 ```csharp
 builder.HasMany(c => c.Products)
@@ -785,6 +828,57 @@ namespace Presentation.Controllers
     }
 }
 ```
+### Serwis do wysłania Email:
+```csharp
+using Application.Dtos;
+using Application.Interfaces;
+using Domain.Models;
+using Infrastructure.Options;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+
+namespace Application.Services;
+
+public class EmailService(IMailjetClient client, IOptions<MailJetOptions> options) : IEmailService
+{
+    public async Task SendEmailAsync(string toEmail, IEnumerable<Product> products)
+    {
+        var request = new MailjetRequest
+            {
+                Resource = Send.Resource
+            }
+            .Property(Send.FromEmail, "alekseibaggmet8@gmail.com")
+            .Property(Send.FromName, "ZirkaMarketPlace")
+            .Property(Send.Subject, "Twoje zamówienie!")
+            .Property(Send.TextPart, "Twoje zamówienie!")
+            .Property(Send.HtmlPart, "<strong>HTML PART</strong>")
+            .Property(Send.Recipients, new JArray
+            {
+                new JObject
+                {
+                    { "Email", toEmail }
+                }
+            })
+            .Property(Send.MjTemplateID, options.Value.TemplateId)
+            .Property(Send.MjTemplateLanguage, true)
+            .Property(Send.Vars, new JObject
+            {
+                { "products", JArray.FromObject(products.Select(p => new
+                {
+                    name = p.Name,
+                    price = p.Price,
+                    photoUrl = p.PhotoUrl
+                })) }
+            });
+
+        var response = await client.PostAsync(request);
+    }
+}
+
+
+```
 ## Problemy i ich rozwiązania
 
 ### Problem: Brak funkcjonalności wylogowania użytkownika
@@ -825,25 +919,15 @@ namespace Presentation.Controllers
 ### Problem: Nadmiarowe pola w DTO i niepotrzebna logika w kontrolerze
 
 1. **Opis problemu**:
-   - `LoginDto` zawierał pola `IsGoogleLogin` i `GoogleToken`, które były wykorzystywane do rozróżniania logowania tradycyjnego i logowania za pomocą Google. Wprowadzało to nadmiarową logikę i zwiększało złożoność DTO oraz kodu kontrolera.
-   - W `UserController` znajdowała się rozbudowana logika warunkowa sprawdzająca wartość pola `IsGoogleLogin`, co zwiększało złożoność kodu i utrudniało jego utrzymanie.
+   - Konflikty dotyczyły plików zmodyfikowanych niezależnie przez różnych członków zespołu, co prowadziło do niespójności w kodzie.
+   - Problem blokował proces scalania i wymagał ręcznego rozwiązania konfliktów, co opóźniało wdrożenie zmian.
 
 2. **Rozwiązanie**:
-   - Z `LoginDto` usunięto pola `IsGoogleLogin` i `GoogleToken`.
-   - Logikę rozróżniania logowania tradycyjnego i Google przeniesiono na poziom serwisu użytkownika (`UserService`) lub w całości zastąpiono uproszczonym podejściem.
-   - W `UserController` uproszczono metodę `LoginUser`, usuwając warunki związane z logowaniem Google.
+   - Ręczne rozwiązanie konfliktów:
+     Konflikty w plikach zostały scalone w sposób uwzględniający najnowsze zmiany z obu branchy.
+   - Testy i weryfikacja:
+    Po zakończeniu scalania przeprowadzono testy jednostkowe, aby upewnić się, że zmiany nie wprowadziły błędów.
 
-**Kod przed zmianą**:
-![alt text](Photo/code8.png)
-
-**Kod po zmianie:**
-![alt text](Photo/code9.png)
-
-**Kod kontrolera przed zmianie:**
-![alt text](Photo/code10.png)
-
-**Kod kontrolera po zmianie:**
-![alt text](Photo/code11.png)
 
 ### Problem: Niespójność w typach danych zwracanych przez metody serwisu i kontrolera
 
